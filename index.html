@@ -46,8 +46,8 @@
             .then(response => response.json())
             .then(data => {
                 // Tampilkan hasil prediksi
-                document.getElementById('predicted-class').textContent = "Prediksi kelas: " + data.predicted_class;
-                document.getElementById('confidence').textContent = "Confidence: " + data.confidence;
+                document.getElementById('success').textContent = "Prediksi kelas: " + data.predicted_class;
+                document.getElementById('success').textContent = "Confidence: " + data.confidence;
             })
             .catch(error => {
                 alert('Terjadi kesalahan saat mengirim permintaan.');
