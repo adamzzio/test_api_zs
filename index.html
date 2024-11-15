@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Gambar untuk Prediksi Intake Gula</title>
+</head>
+<body>
+    <h1>Upload Gambar untuk Prediksi Intake Gula</h1>
+
+    <!-- Formulir untuk upload gambar -->
+    <form id="upload-form" enctype="multipart/form-data">
+        <label for="file">Pilih Gambar:</label>
+        <input type="file" id="file" name="file" accept="image/*" required>
+        <button type="submit">Upload Gambar</button>
+    </form>
+
+    <h2>Hasil Prediksi:</h2>
+    <p id="predicted-class">Prediksi kelas: -</p>
+    <p id="confidence">Confidence: -</p>
+
+    <script>
+        // Tangani pengiriman formulir
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();  // Mencegah refresh halaman
+
+            // Ambil file gambar dari input
+            var fileInput = document.getElementById('file');
+            var file = fileInput.files[0];
+
+            // Pastikan file dipilih
+            if (!file) {
+                alert('Silakan pilih gambar terlebih dahulu.');
+                return;
+            }
+
+            // Buat FormData untuk mengirim file gambar
+            var formData = new FormData();
+            formData.append('file', file);
+
+            // Kirim permintaan POST ke endpoint API
+            fetch('https://adamzzio.pythonanywhere.com/predict_sugar_intake', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Tampilkan hasil prediksi
+                document.getElementById('predicted-class').textContent = "Prediksi kelas: " + data.predicted_class;
+                document.getElementById('confidence').textContent = "Confidence: " + data.confidence;
+            })
+            .catch(error => {
+                alert('Terjadi kesalahan saat mengirim permintaan.');
+            });
+        });
+    </script>
+</body>
+</html>
